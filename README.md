@@ -90,7 +90,7 @@ Create a `.env` file in the `frontend` directory:
 REACT_APP_API_URL=http://localhost:5000/api
 ```
 
-## 🏃 Running the Application
+## Running the Application
 
 ### Development Mode
 
@@ -201,7 +201,7 @@ git push origin staging
 |--------|----------|-------------|
 | GET | `/api/evaluation/:id` | Get evaluation details |
 
-## 🧪 Testing
+## Testing
 
 ### Running Tests
 ```bash
@@ -238,7 +238,7 @@ npm test
 - ✅ Certificate generation
 - ✅ Basic dashboard
 
-## 🔧 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
