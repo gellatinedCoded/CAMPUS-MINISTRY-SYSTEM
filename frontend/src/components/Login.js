@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import api from '../services/api';
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -75,6 +76,47 @@ const handleSubmit = async (e) => {
           <p className="text-gray-500">Electronic Certificate Management System</p>
         </div>
         
+        <div className="flex justify-center mb-4">
+  <GoogleLogin
+    onSuccess={(response) => {
+      api.post("/auth/google", {
+        credential: response.credential
+      })
+      .then((res) => {
+        const data = res.data;
+
+        // Save auth data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        // Update context
+        login(data);
+
+        // Set API header
+        api.defaults.headers.common['Authorization'] =
+          `Bearer ${data.token}`;
+
+        toast.success("Google login successful!");
+
+        const targetPath =
+          data.user.role === 'student'
+            ? '/student/dashboard'
+            : '/admin/dashboard';
+
+        navigate(targetPath);
+      })
+      .catch((err) => {
+        console.error("Google login failed:", err);
+        toast.error("Google login failed");
+      });
+    }}
+    onError={() => {
+      console.log("Google login failed");
+      toast.error("Google login failed");
+    }}
+  />
+</div>
+
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
